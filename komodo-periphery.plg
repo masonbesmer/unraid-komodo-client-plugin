@@ -7,7 +7,7 @@
 <!ENTITY pluginURL   "https://raw.githubusercontent.com/MephistoJB/unraid-komodo-client-plugin/main/komodo-periphery.plg">
 <!ENTITY bundle      "komodo-periphery-2026.06.26-x86_64-1.tgz">
 <!ENTITY bundleURL   "https://github.com/MephistoJB/unraid-komodo-client-plugin/releases/download/v2026.06.26/komodo-periphery-2026.06.26-x86_64-1.tgz">
-<!ENTITY bundleSHA256 "a3c11b7307d885492edfcc99cb87f10b5023007d175eb0627f617298fd74bf75">
+<!ENTITY bundleSHA256 "ac3bb4ddee8e23c0e90a2113c9b0963ea22703b13cd382082684888127ef5d18">
 <!ENTITY supportURL  "https://github.com/MephistoJB/unraid-komodo-client-plugin/issues">
 <!ENTITY projectURL  "https://github.com/MephistoJB/unraid-komodo-client-plugin">
 <!ENTITY readmeURL   "https://github.com/MephistoJB/unraid-komodo-client-plugin#readme">
@@ -27,6 +27,7 @@
 - Native host service management via Unraid `rc.d`, without Docker or `systemd`
 - Persistent config, keys, runtime config, and CA feed metadata
 - GitHub-ready bundle build and `.plg` generation scripts
+- Corrected the release bundle so it does not contain `/etc/rc.d` directory entries; the plugin must only ship `/usr/local/etc/rc.d/rc.komodo-periphery` and create `/etc/rc.d/rc.komodo-periphery` as an explicit compatibility symlink during install.
 ]]></CHANGES>
 
 <FILE Name="&cfgdir;/&bundle;">

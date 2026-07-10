@@ -49,6 +49,7 @@ The plugin intentionally separates active files from persistent state:
 
 This keeps the Unraid plugin lifecycle conventional while ensuring Komodo identity survives reinstall, reboot, and updates.
 It also avoids starting Periphery too early during boot, before shares and the array are ready.
+The package must not contain `/etc/rc.d` directory entries. Unraid owns `/etc/rc.d` as a runtime symlink to `/usr/local/etc/rc.d`; packaging that directory can replace the symlink and break core services such as nginx, PHP-FPM, Samba, Docker orchestration, and other plugins.
 
 ## Supported Settings
 
