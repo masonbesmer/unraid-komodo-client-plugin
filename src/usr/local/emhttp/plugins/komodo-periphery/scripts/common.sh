@@ -163,3 +163,21 @@ is_runtime_ready() {
 
   return 0
 }
+
+# Periphery exits immediately unless a pseudo-terminal is attached, so it is
+# launched under `script` (see start.sh). That makes `script`'s PID, not
+# Periphery's, the one bash captures via $!, so find Periphery's actual PID
+# by walking /proc for a direct child of the given parent PID.
+find_child_pid() {
+  local parent="$1"
+  local pid ppid
+  for pid in /proc/[0-9]*; do
+    pid="${pid#/proc/}"
+    ppid=$(grep -m1 '^PPid:' "/proc/${pid}/status" 2>/dev/null | awk '{print $2}')
+    if [[ "${ppid}" == "${parent}" ]]; then
+      echo "${pid}"
+      return 0
+    fi
+  done
+  return 1
+}
