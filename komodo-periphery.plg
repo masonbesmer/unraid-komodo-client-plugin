@@ -74,7 +74,7 @@ chmod 0755 "${RC_TARGET}"
 mkdir -p /etc/rc.d
 ln -sfn "${RC_TARGET}" "${RC_SCRIPT}"
 
-rm -f $(ls "${CFG_DIR}/${PLUGIN_NAME}-"*-x86_64-1.tgz 2>/dev/null | grep -v "${PLUGIN_VERSION}" || true)
+find "${CFG_DIR}" -maxdepth 1 -name "${PLUGIN_NAME}-*-x86_64-1.tgz" ! -name "$(basename "${BUNDLE}")" -delete
 
 if [[ -x "${RC_SCRIPT}" ]]; then
   "${RC_SCRIPT}" install-init || true
