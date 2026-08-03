@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026.08.03
+
+- Fix Unraid rc.d bundle packaging
+- Fix Periphery failing to start with no logs
+
 ## 2026.06.26
 
 - Initial production-oriented Unraid plugin scaffold for Komodo Periphery
