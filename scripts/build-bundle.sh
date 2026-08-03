@@ -26,6 +26,7 @@ cp -R "${SRC_DIR}/." "${ROOTFS_DIR}/"
 find "${ROOTFS_DIR}" -name '._*' -type f -delete
 
 mkdir -p "${ROOTFS_DIR}/usr/local/emhttp/plugins/${PLUGIN_NAME}/bin"
+echo "${PLUGIN_VERSION}" > "${ROOTFS_DIR}/usr/local/emhttp/plugins/${PLUGIN_NAME}/VERSION"
 
 BINARY_PATH="${DOWNLOAD_DIR}/${KOMODO_BINARY_NAME}"
 echo "Downloading Komodo Periphery ${KOMODO_VERSION}..."

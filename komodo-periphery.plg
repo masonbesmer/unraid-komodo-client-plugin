@@ -7,7 +7,7 @@
 <!ENTITY pluginURL   "https://raw.githubusercontent.com/masonbesmer/unraid-komodo-client-plugin/main/komodo-periphery.plg">
 <!ENTITY bundle      "komodo-periphery-2026.08.03-x86_64-1.tgz">
 <!ENTITY bundleURL   "https://github.com/masonbesmer/unraid-komodo-client-plugin/releases/download/v2026.08.03/komodo-periphery-2026.08.03-x86_64-1.tgz">
-<!ENTITY bundleSHA256 "aafa612e2ec5abecf58f356c3b2ad85b1b606be05bead404b16d3ae1f541b333">
+<!ENTITY bundleSHA256 "2c3be3c2c8e384e30e1ba89174ab8f0dc29aaf9d3306a2d4a3a810ea39767a15">
 <!ENTITY supportURL  "https://github.com/masonbesmer/unraid-komodo-client-plugin/issues">
 <!ENTITY projectURL  "https://github.com/masonbesmer/unraid-komodo-client-plugin">
 <!ENTITY readmeURL   "https://github.com/masonbesmer/unraid-komodo-client-plugin#readme">
