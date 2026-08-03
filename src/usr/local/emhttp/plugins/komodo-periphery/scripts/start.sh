@@ -29,7 +29,7 @@ fi
 
 # Periphery exits immediately when its stdout isn't a pseudo-terminal, so it
 # can't be launched as a plain backgrounded process; `script` gives it one.
-setsid script -qc "exec \"${BINARY}\" --config-path \"${RUNTIME_CONFIG_FILE}\"" "${LOG_FILE}" < /dev/null &
+setsid script -qc "exec \"${BINARY}\" --config-path \"${RUNTIME_CONFIG_FILE}\"" "${LOG_FILE}" < /dev/null > /dev/null 2>&1 &
 SCRIPT_PID=$!
 
 PERIPHERY_PID=""
