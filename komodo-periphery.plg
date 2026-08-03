@@ -72,7 +72,9 @@ tar --no-same-owner --no-same-permissions -xzf "${BUNDLE}" -C /
 chmod 0755 "/usr/local/emhttp/plugins/${PLUGIN_NAME}/scripts/"*.sh
 chmod 0755 "${RC_TARGET}"
 mkdir -p /etc/rc.d
-ln -sfn "${RC_TARGET}" "${RC_SCRIPT}"
+if [[ ! "${RC_TARGET}" -ef "${RC_SCRIPT}" ]]; then
+  ln -sfn "${RC_TARGET}" "${RC_SCRIPT}"
+fi
 
 find "${CFG_DIR}" -maxdepth 1 -name "${PLUGIN_NAME}-*-x86_64-1.tgz" ! -name "$(basename "${BUNDLE}")" -delete
 
