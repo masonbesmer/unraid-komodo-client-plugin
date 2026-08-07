@@ -10,6 +10,8 @@ require_once "/usr/local/emhttp/plugins/dynamix/include/Wrappers.php";
 const PLUGIN = "komodo-periphery";
 const STATUS_SCRIPT = "/usr/local/emhttp/plugins/komodo-periphery/scripts/status.sh";
 const CONTROL_SCRIPT = "/etc/rc.d/rc.komodo-periphery";
+const UPDATE_SCRIPT = "/usr/local/emhttp/plugins/komodo-periphery/scripts/update-periphery.sh";
+const LIST_VERSIONS_SCRIPT = "/usr/local/emhttp/plugins/komodo-periphery/scripts/list-periphery-versions.sh";
 const DEFAULT_ROOT_DIRECTORY = "/boot/config/komodo/periphery-agent/data";
 const DEFAULT_RUNTIME_CONFIG = "/boot/config/komodo/periphery-agent/config/periphery.config.toml";
 const DEFAULT_PUBLIC_KEY_FILE = "/boot/config/komodo/periphery-agent/keys/periphery.pub";
@@ -19,6 +21,9 @@ function getPage(string $page, bool $unused = false, array $context = []): strin
 {
     [$cfg, $status] = loadState();
     [$message, $messageType, $status] = maybeHandleServiceAction($context['var'] ?? null, $status);
+    if ($message === "") {
+        [$message, $messageType, $status] = maybeHandleUpdateAction($context['var'] ?? null, $status);
+    }
 
     ob_start();
     renderStyles();
@@ -81,6 +86,43 @@ function maybeHandleServiceAction($var, array $status): array
     [, $status] = loadState();
 
     return [$message, $messageType, $status];
+}
+
+function maybeHandleUpdateAction($var, array $status): array
+{
+    $message = "";
+    $messageType = "normal";
+
+    if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+        return [$message, $messageType, $status];
+    }
+
+    if (!isset($_POST['update_action'], $_POST['csrf_token']) || !is_array($var) || ($_POST['csrf_token'] ?? '') !== ($var['csrf_token'] ?? null)) {
+        return [$message, $messageType, $status];
+    }
+
+    $version = (string) $_POST['update_action'];
+    if (!preg_match('/^(latest|v\d+\.\d+\.\d+)$/', $version)) {
+        return ["Invalid version selection.", "error", $status];
+    }
+
+    exec(UPDATE_SCRIPT . " " . escapeshellarg($version) . " 2>&1", $cmdOutput, $code);
+    $message = trim(implode("\n", $cmdOutput));
+    $messageType = $code === 0 ? "success" : "error";
+
+    [, $status] = loadState();
+
+    return [$message, $messageType, $status];
+}
+
+function fetchAvailablePeripheryVersions(): array
+{
+    exec(LIST_VERSIONS_SCRIPT . " 2>/dev/null", $lines, $code);
+    if ($code !== 0) {
+        return [];
+    }
+
+    return array_values(array_filter(array_map('trim', $lines)));
 }
 
 function renderStyles(): void
@@ -492,6 +534,26 @@ function renderStatus(array $cfg, array $status, string $message, string $messag
             <td><div class="komodo-code"><?= e($status['public_key_file'] ?? DEFAULT_PUBLIC_KEY_FILE); ?></div></td>
           </tr>
         </table>
+      </section>
+
+      <section class="komodo-card">
+        <h3 class="komodo-section-title">Periphery binary</h3>
+        <p class="komodo-section-copy">Update the Periphery agent independently of the plugin release, e.g. to match your Komodo Core version.</p>
+        <div class="komodo-grid" style="margin-bottom:14px;">
+          <?= renderMetric('Installed version', firstNonEmpty($status['periphery_version'] ?? null, 'unknown')); ?>
+        </div>
+        <form method="POST" class="komodo-actions">
+          <input type="hidden" name="csrf_token" value="<?= e(is_array($var) ? ($var['csrf_token'] ?? '') : ''); ?>">
+          <?php
+          $versions = fetchAvailablePeripheryVersions();
+          $options = ['latest' => 'Latest'];
+          foreach ($versions as $version) {
+              $options[$version] = $version;
+          }
+          echo renderSelect('update_action', $options, 'latest');
+          ?>
+          <input type="submit" value="Update">
+        </form>
       </section>
 
       <section class="komodo-card">

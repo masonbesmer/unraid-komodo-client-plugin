@@ -89,6 +89,8 @@ fi
 
 find "\${CFG_DIR}" -maxdepth 1 -name "\${PLUGIN_NAME}-*-x86_64-1.tgz" ! -name "\$(basename "\${BUNDLE}")" -delete
 
+echo "${KOMODO_VERSION}" > "\${STATE_DIR}/periphery-version"
+
 if [[ -x "\${RC_SCRIPT}" ]]; then
   "\${RC_SCRIPT}" install-init || true
   if grep -q '^SERVICE_ENABLED="yes"' "\${CFG_DIR}/\${PLUGIN_NAME}.cfg" 2>/dev/null; then

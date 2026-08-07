@@ -32,4 +32,5 @@ public_key="${PUBLIC_KEY}"
 log_file="${LOG_FILE}"
 runtime_config_file="${RUNTIME_CONFIG_FILE}"
 plugin_version="$(plugin_version)"
+periphery_version="$(cat "${STATE_DIR}/periphery-version" 2>/dev/null || echo unknown)"
 EOF
