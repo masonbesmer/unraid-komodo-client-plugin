@@ -2,12 +2,12 @@
 <!DOCTYPE PLUGIN [
 <!ENTITY name        "komodo-periphery">
 <!ENTITY author      "MephistoJB">
-<!ENTITY version     "2026.08.03">
+<!ENTITY version     "2026.08.07">
 <!ENTITY launch      "Network Services/Komodo Periphery">
 <!ENTITY pluginURL   "https://raw.githubusercontent.com/masonbesmer/unraid-komodo-client-plugin/main/komodo-periphery.plg">
-<!ENTITY bundle      "komodo-periphery-2026.08.03-x86_64-1.tgz">
-<!ENTITY bundleURL   "https://github.com/masonbesmer/unraid-komodo-client-plugin/releases/download/v2026.08.03/komodo-periphery-2026.08.03-x86_64-1.tgz">
-<!ENTITY bundleSHA256 "3a5c87c8a7e4a63522dfffdd68fe3f4279d26a56e5c7f7d15c64cf8ac4583144">
+<!ENTITY bundle      "komodo-periphery-2026.08.07-x86_64-1.tgz">
+<!ENTITY bundleURL   "https://github.com/masonbesmer/unraid-komodo-client-plugin/releases/download/v2026.08.07/komodo-periphery-2026.08.07-x86_64-1.tgz">
+<!ENTITY bundleSHA256 "c7fd3b49a48b3d2eb1cb001bb935b3280537396953730d240a14feaceb9c8ad7">
 <!ENTITY supportURL  "https://github.com/masonbesmer/unraid-komodo-client-plugin/issues">
 <!ENTITY projectURL  "https://github.com/masonbesmer/unraid-komodo-client-plugin">
 <!ENTITY readmeURL   "https://github.com/masonbesmer/unraid-komodo-client-plugin#readme">
@@ -20,6 +20,11 @@
 <DESCRIPTION>Run Komodo Periphery directly on Unraid as a native host service. The plugin keeps configuration under /boot/config/plugins/komodo-periphery and persistent Komodo state under /boot/config/komodo/periphery-agent so updates do not rotate keys or lose onboarding. </DESCRIPTION>
 
 <CHANGES><![CDATA[
+
+## 2026.08.07
+
+- Bump bundled Komodo Periphery binary to v2.3.1 (fixes server/core version mismatch alert)
+- Add a Periphery binary update box on the Status page: update to latest or pick a specific version from a dropdown, independent of plugin releases
 
 ## 2026.08.03
 
@@ -46,10 +51,10 @@
 set -euo pipefail
 
 PLUGIN_NAME="komodo-periphery"
-PLUGIN_VERSION="2026.08.03"
+PLUGIN_VERSION="2026.08.07"
 CFG_DIR="/boot/config/plugins/${PLUGIN_NAME}"
 STATE_DIR="/boot/config/komodo/periphery-agent"
-BUNDLE="${CFG_DIR}/komodo-periphery-2026.08.03-x86_64-1.tgz"
+BUNDLE="${CFG_DIR}/komodo-periphery-2026.08.07-x86_64-1.tgz"
 INSTALL_DIR="/usr/local/emhttp/plugins/${PLUGIN_NAME}"
 RC_TARGET="/usr/local/etc/rc.d/rc.${PLUGIN_NAME}"
 RC_SCRIPT="/etc/rc.d/rc.${PLUGIN_NAME}"
@@ -78,6 +83,8 @@ fi
 
 find "${CFG_DIR}" -maxdepth 1 -name "${PLUGIN_NAME}-*-x86_64-1.tgz" ! -name "$(basename "${BUNDLE}")" -delete
 
+echo "v2.3.1" > "${STATE_DIR}/periphery-version"
+
 if [[ -x "${RC_SCRIPT}" ]]; then
   "${RC_SCRIPT}" install-init || true
   if grep -q '^SERVICE_ENABLED="yes"' "${CFG_DIR}/${PLUGIN_NAME}.cfg" 2>/dev/null; then
@@ -89,7 +96,7 @@ echo ""
 echo "----------------------------------------------------"
 echo " ${PLUGIN_NAME} installed"
 echo " Plugin version: ${PLUGIN_VERSION}"
-echo " Komodo binary: v2.2.0"
+echo " Komodo binary: v2.3.1"
 echo "----------------------------------------------------"
 echo ""
 ]]></INLINE>

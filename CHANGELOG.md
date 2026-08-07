@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026.08.07
+
+- Bump bundled Komodo Periphery binary to v2.3.1 (fixes server/core version mismatch alert)
+- Add a Periphery binary update box on the Status page: update to latest or pick a specific version from a dropdown, independent of plugin releases
+
 ## 2026.08.03
 
 - Fix Unraid rc.d bundle packaging

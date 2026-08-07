@@ -3,7 +3,7 @@
     <PluginURL>https://raw.githubusercontent.com/masonbesmer/unraid-komodo-client-plugin/main/komodo-periphery.plg</PluginURL>
     <PluginAuthor>MephistoJB</PluginAuthor>
     <Category>Tools:System</Category>
-    <Date>2026-08-03</Date>
+    <Date>2026-08-07</Date>
     <Name>Komodo Periphery</Name>
     <Description>Run Komodo Periphery directly on Unraid as a native host service. The plugin keeps configuration under /boot/config/plugins/komodo-periphery and persistent Komodo state under /boot/config/komodo/periphery-agent so updates do not rotate keys or lose onboarding. </Description>
     <Requires>No external plugin dependencies. Docker is optional for Komodo-managed workloads, but the plugin itself runs natively on the Unraid host.  </Requires>
